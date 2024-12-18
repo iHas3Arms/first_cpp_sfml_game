@@ -1,5 +1,4 @@
 #include "Game.h"
-#include <iostream>
 
 // Private Functions
 void Game::initVariables()
@@ -27,8 +26,9 @@ Game::Game()
 
 void Game::initEnemies()
 {
-	// this->enemy.setPosition();
+	this->enemy.setPosition(sf::Vector2f(10.f, 10.f));
 	this->enemy.setSize(sf::Vector2f(100.f, 100.f));
+	this->enemy.setScale(sf::Vector2f(0.5f, 0.5f));
 	this->enemy.setFillColor(sf::Color(255, 255, 0, 255));
 	this->enemy.setOutlineColor(sf::Color::Green);
 	this->enemy.setOutlineThickness(1.f);
@@ -60,18 +60,29 @@ void Game::pollEvents()
 void Game::update()
 {
 	this->pollEvents();
+
+	// Update mouse position
+	//   Relative to the screen
+	//std::cout << "__Mouse position relative to screen__\n"
+	//		  << "x: " << sf::Mouse::getPosition().x
+	//		  << "\ny: " << sf::Mouse::getPosition().y;
+
+	//   Relative to window
+	std::cout << "mouse pos | x: " << sf::Mouse::getPosition(*this->window).x 
+		      << " y: " << sf::Mouse::getPosition(*this->window).y << std::endl;
 }
 
 void Game::render()
 {
 	/*
-	@ Returns void
+		@ Returns void
 
-	- clear old frame
-	- render objects
-	- display frame in window
+		- clear old frame
+		- render objects
+		- display frame in window
 	
-	Renders the game objects*/
+		Renders the game objects
+	*/
 	this->window->clear();
 	this->window->draw(this->enemy);
 	this->window->display();
