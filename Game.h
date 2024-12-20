@@ -21,7 +21,17 @@ private:
 	sf::VideoMode videoMode;
 	sf::Event event;
 
+	// Game logic variables
+	int points;
+
+	// ^ Enemies
+	float enemySpawnTimer;
+	float enemySpawnTimerMax;
+	int maxEnemies;
+
 	// Game objects
+	// > Enemies
+	std::vector<sf::RectangleShape> enemies;
 	sf::RectangleShape enemy;
 
 	// Private functions
@@ -38,7 +48,12 @@ public:
 	bool running();
 
 	// Functions
+	void spawnEnemy();
+
 	void pollEvents();
+	void updateMousePositions();
+	void updateEnemies();
 	void update();
+	void renderEnemies();
 	void render();
 };

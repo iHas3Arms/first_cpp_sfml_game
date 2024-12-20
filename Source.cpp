@@ -7,6 +7,11 @@
 
 int main()
 {
+    /*std::vector<sf::RectangleShape> enemies;
+    std::vector<std::string> strings;
+    strings.push_back("Wigga");
+    std::cout << strings[0];*/
+
     // Init Game Engine
     Game game;
 
@@ -22,3 +27,5 @@ int main()
 
     return 0;
 }
+
+// WHY NOT WORKING
