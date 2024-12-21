@@ -36,8 +36,8 @@ void Game::initEnemies()
 	this->enemy.setSize(sf::Vector2f(100.f, 100.f));
 	this->enemy.setScale(sf::Vector2f(0.5f, 0.5f));
 	this->enemy.setFillColor(sf::Color(255, 255, 0, 255));
-	this->enemy.setOutlineColor(sf::Color::Green);
-	this->enemy.setOutlineThickness(1.f);
+	// this->enemy.setOutlineColor(sf::Color::Green);
+	// this->enemy.setOutlineThickness(1.f);
 }
 
 Game::~Game()
@@ -54,8 +54,9 @@ void Game::updateMousePositions()
 		- Mouse position relative to window (and Vector2i, not Vector2f)
 	*/
 
-	std::cout << "mouse pos | x: " << sf::Mouse::getPosition(*this->window).x
-			  << " y: " << sf::Mouse::getPosition(*this->window).y << std::endl;
+	this->mousePosWindow = sf::Mouse::getPosition(*this->window);
+	this->mousePosView = this->window->mapPixelToCoords(this->mousePosWindow);
+	// std::cout << mousePosView.x << "  " << mousePosView.y << std::endl;
 }
 
 void Game::spawnEnemy()
@@ -86,6 +87,7 @@ void Game::spawnEnemy()
 	// Adds new enemy ('spawns' it in)
 	this->enemies.push_back(enemy);
 
+	std::cout << this->enemies.size();
 }
 
 void Game::updateEnemies()
@@ -115,10 +117,31 @@ void Game::updateEnemies()
 		}
 	}
 
-	// Move the enemies
-	for (auto &e : this->enemies)
+	// Move and updating enemies
+	for (int i = 0; i < this->enemies.size(); i++) // auto &e : this->enemies
 	{
-		e.move(0.f, 0.5f);
+		this->enemies[i].move(0.f, 0.5f); // e.move(...);
+
+		bool deleted = false;
+
+		// Check if clicked on
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+		{
+			if (this->enemies[i].getGlobalBounds().contains(this->mousePosView))
+			{
+				deleted = true;
+				printf("skibidi van dyke\n");
+			}
+		}
+		
+		// If the enemy is past the bottom of the screen
+		if (this->enemies[i].getPosition().y > this->window->getSize().y) {
+			// that enemy will be despawned (removed from enemies vector)
+			deleted = true;
+		}
+
+		if (deleted)
+			this->enemies.erase(this->enemies.begin() + i);
 	}
 }
 
@@ -152,7 +175,7 @@ void Game::update()
 {
 	this->pollEvents();
 
-	// this->updateMousePositions();
+	this->updateMousePositions();
 
 	this->updateEnemies();
 }

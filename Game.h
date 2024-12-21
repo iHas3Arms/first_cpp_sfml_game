@@ -21,6 +21,10 @@ private:
 	sf::VideoMode videoMode;
 	sf::Event event;
 
+	// Mouse positions
+	sf::Vector2i mousePosWindow;
+	sf::Vector2f mousePosView;
+
 	// Game logic variables
 	int points;
 
