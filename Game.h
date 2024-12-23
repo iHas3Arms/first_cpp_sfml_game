@@ -26,7 +26,9 @@ private:
 	sf::Vector2f mousePosView;
 
 	// Game logic variables
-	int points;
+	unsigned points;
+
+	bool mouseHeld;
 
 	// ^ Enemies
 	float enemySpawnTimer;

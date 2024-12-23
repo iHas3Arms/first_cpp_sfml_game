@@ -10,6 +10,7 @@ void Game::initVariables()
 	this->enemySpawnTimer = 0.f;
 	this->enemySpawnTimerMax = 1000.f;
 	this->maxEnemies = 5;
+	this->mouseHeld = false;
 }
 
 void Game::initWindow()
@@ -122,33 +123,43 @@ void Game::updateEnemies()
 	{
 		this->enemies[i].move(0.f, 0.5f); // e.move(...);
 
-		bool deleted = false;
-
-		// Check if clicked on
-		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-		{
-			if (this->enemies[i].getGlobalBounds().contains(this->mousePosView))
-			{
-				deleted = true;
-				printf("skibidi van dyke\n");
-			}
-		}
-		
 		// If the enemy is past the bottom of the screen
 		if (this->enemies[i].getPosition().y > this->window->getSize().y) {
 			// that enemy will be despawned (removed from enemies vector)
-			deleted = true;
+			this->enemies.erase(this->enemies.begin() + i);
 		}
 
-		if (deleted)
-			this->enemies.erase(this->enemies.begin() + i);
 	}
+
+	// Check if clicked on
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+	{
+		if (this->mouseHeld == false)
+		{
+			this->mouseHeld = true;
+			bool deleted = false;
+			for (size_t i = 0; i < this->enemies.size() && deleted == false; i++)
+			{
+				if (this->enemies[i].getGlobalBounds().contains(this->mousePosView))
+				{
+					// Delete the enemy
+					deleted = true;
+					this->enemies.erase(this->enemies.begin() + i);
+					this->points += 1.f;
+					std::cout << "Points: " << this->points << std::endl;
+				}
+			}
+		}
+	}
+	else
+		this->mouseHeld = false;
 }
 
 void Game::renderEnemies()
 {
 	// Rendering all the enemies
-	for (auto &e : this->enemies) {
+	for (auto &e : this->enemies)
+	{
 		this->window->draw(e);
 	}
 }
