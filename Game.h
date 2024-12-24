@@ -6,6 +6,7 @@
 #include <SFML/Window.hpp>
 #include <SFML/Audio.hpp>
 #include <SFML/Network.hpp>
+#include <sstream>
 
 /*
 	Class that acts as the game engine.
@@ -24,6 +25,12 @@ private:
 	// Mouse positions
 	sf::Vector2i mousePosWindow;
 	sf::Vector2f mousePosView;
+
+	// Resources
+	sf::Font font;
+
+	// Text
+	sf::Text uiText;
 
 	// Game logic variables
 	unsigned points;
@@ -49,6 +56,8 @@ private:
 	// Private functions
 	void initVariables();
 	void initWindow();
+	void initFonts();
+	void initText();
 	void initEnemies();
 
 public:
@@ -65,8 +74,12 @@ public:
 
 	void pollEvents();
 	void updateMousePositions();
+
+	void updateText();
 	void updateEnemies();
 	void update();
+
+	void renderText();
 	void renderEnemies();
 	void render();
 };

@@ -27,11 +27,32 @@ void Game::initWindow()
 	this->window->setFramerateLimit(60);
 }
 
+void Game::initFonts()
+{
+	std::string fontPath = "graphics/Poppins-Medium.ttf";
+	if (this->font.loadFromFile(fontPath))
+	{
+		std::cout << "ERROR::GAME::INITFONTS::Failed to load fonts" << std::endl;
+	}
+}
+
+void Game::initText()
+{
+	this->uiText.setFont(this->font);
+	this->uiText.setCharacterSize(12);
+	this->uiText.setFillColor(sf::Color::White);
+	this->uiText.setOutlineColor(sf::Color::Blue);
+	this->uiText.setOutlineThickness(1.f);
+	this->uiText.setString("NONE");
+}
+
 // Constructors / Destructors
 Game::Game()
 {
 	this->initVariables();
 	this->initWindow();
+	this->initFonts();
+	this->initText();
 	this->initEnemies();
 }
 
@@ -93,6 +114,15 @@ void Game::spawnEnemy()
 	this->enemies.push_back(enemy);
 
 	std::cout << "No. of enemies: " << this->enemies.size() << std::endl;
+}
+
+void Game::updateText()
+{
+	std::stringstream ss;
+
+	ss << "Points: " << this->points << "\nHealth: " << this->health;
+
+	this->uiText.setString(ss.str());
 }
 
 void Game::updateEnemies()
@@ -164,6 +194,11 @@ void Game::updateEnemies()
 	}
 }
 
+void Game::renderText()
+{
+	this->window->draw(this->uiText);
+}
+
 void Game::renderEnemies()
 {
 	// Rendering all the enemies
@@ -209,6 +244,7 @@ void Game::update()
 	{
 		this->endGame = true;
 	}
+	this->updateText();
 }
 
 void Game::render()
@@ -226,6 +262,7 @@ void Game::render()
 	this->renderEnemies();
 
 	// render UI last so not blocked by any other objects
+	this->renderText();
 
 	this->window->display();
 }
