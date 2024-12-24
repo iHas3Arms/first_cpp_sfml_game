@@ -6,11 +6,13 @@ void Game::initVariables()
 	this->window = nullptr;
 
 	// Assign values
+	this->health = 10;
 	this->points = 0;
+	this->endGame = false;
 	this->enemySpawnTimer = 0.f;
-	this->enemySpawnTimerMax = 1000.f;
+	this->enemySpawnTimerMax = 500.f;
 	// Changes values of enemySpeed
-	this->enemySpeed = { 1.f, 3.f };
+	this->enemySpeed = { 1.f, 5.f };
 	this->maxEnemies = 8;
 	this->mouseHeld = false;
 }
@@ -129,6 +131,8 @@ void Game::updateEnemies()
 		if (this->enemies[i].getPosition().y > this->window->getSize().y) {
 			// that enemy will be despawned (removed from enemies vector)
 			this->enemies.erase(this->enemies.begin() + i);
+			this->health -= 1;
+			std::cout << "Health: " << this->health << std::endl;
 		}
 
 	}
@@ -152,9 +156,12 @@ void Game::updateEnemies()
 				}
 			}
 		}
+		// Nothing here
 	}
 	else
+	{
 		this->mouseHeld = false;
+	}
 }
 
 void Game::renderEnemies()
@@ -184,6 +191,11 @@ void Game::pollEvents()
 	}
 }
 
+const bool Game::getEndGame() const
+{
+	return this->endGame;
+}
+
 void Game::update()
 {
 	this->pollEvents();
@@ -191,6 +203,12 @@ void Game::update()
 	this->updateMousePositions();
 
 	this->updateEnemies();
+
+	// Endgame Condition
+	if (this->health <= 0)
+	{
+		this->endGame = true;
+	}
 }
 
 void Game::render()
@@ -214,5 +232,5 @@ void Game::render()
 
 bool Game::running()
 {
-	return this->window->isOpen();
+	return this->window->isOpen() && !this->getEndGame();
 }

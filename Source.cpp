@@ -24,7 +24,7 @@ int main()
         // Render
         game.render();
     }
-
+    printf("Game over");
     return 0;
 }
 

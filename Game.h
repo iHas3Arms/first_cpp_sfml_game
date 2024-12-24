@@ -28,6 +28,7 @@ private:
 	// Game logic variables
 	unsigned points;
 	int health;
+	bool endGame;
 
 	bool mouseHeld;
 
@@ -57,6 +58,7 @@ public:
 
 	// Accessors
 	bool running();
+	const bool getEndGame() const;
 
 	// Functions
 	void spawnEnemy();
