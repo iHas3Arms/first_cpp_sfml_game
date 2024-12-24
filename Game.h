@@ -27,12 +27,17 @@ private:
 
 	// Game logic variables
 	unsigned points;
+	int health;
 
 	bool mouseHeld;
 
 	// ^ Enemies
 	float enemySpawnTimer;
 	float enemySpawnTimerMax;
+	// Creates the struct Speed, now as a data type, which takes the int values x, and y
+	struct Speed { float x; float y; };
+	// Declares an instance of the Speed struct by creating variable speed
+	Speed enemySpeed = { 0.f, 0.f };
 	int maxEnemies;
 
 	// Game objects

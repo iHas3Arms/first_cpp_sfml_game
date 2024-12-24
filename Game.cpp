@@ -9,7 +9,9 @@ void Game::initVariables()
 	this->points = 0;
 	this->enemySpawnTimer = 0.f;
 	this->enemySpawnTimerMax = 1000.f;
-	this->maxEnemies = 5;
+	// Changes values of enemySpeed
+	this->enemySpeed = { 1.f, 3.f };
+	this->maxEnemies = 8;
 	this->mouseHeld = false;
 }
 
@@ -88,7 +90,7 @@ void Game::spawnEnemy()
 	// Adds new enemy ('spawns' it in)
 	this->enemies.push_back(enemy);
 
-	std::cout << this->enemies.size();
+	std::cout << "No. of enemies: " << this->enemies.size() << std::endl;
 }
 
 void Game::updateEnemies()
@@ -121,7 +123,7 @@ void Game::updateEnemies()
 	// Move and updating enemies
 	for (int i = 0; i < this->enemies.size(); i++) // auto &e : this->enemies
 	{
-		this->enemies[i].move(0.f, 0.5f); // e.move(...);
+		this->enemies[i].move(this->enemySpeed.x, this->enemySpeed.y); // e.move(...);
 
 		// If the enemy is past the bottom of the screen
 		if (this->enemies[i].getPosition().y > this->window->getSize().y) {
