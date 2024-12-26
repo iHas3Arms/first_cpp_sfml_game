@@ -28,4 +28,6 @@ int main()
     return 0;
 }
 
-// WHY NOT WORKING
+// PROGRAM BREAKS WHEN YELLOW IS CLICKED. FIX PLS
+//   Post fix: was because if statements checking colours of enemies
+//   was done after enemy removed, so was checking wrong enemy

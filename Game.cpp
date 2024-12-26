@@ -90,7 +90,7 @@ void Game::spawnEnemy()
 	/*
 	@ return void
 	
-	Spawns enemies and sets their colours and positions
+	Spawns enemies and sets their types and colours. Sets positions randomly.
 	- Sets a random position
 	- Sets a random colour
 	0 Adds enemy to the vector
@@ -106,9 +106,38 @@ void Game::spawnEnemy()
 		)
 	);
 
-	std::cout << this->enemy.getPosition().x << "  " << enemy.getPosition().y << std::endl;
+	// Randomise enemy type
+	int type = rand() % 5;
 
-	this->enemy.setFillColor(sf::Color::Green);
+	switch (type)
+	{
+	case 0:
+		this->enemy.setFillColor(sf::Color::Magenta);
+		this->enemy.setSize(sf::Vector2f(10.f, 10.f));
+		break;
+	case 1:
+		this->enemy.setFillColor(sf::Color::Red);
+		this->enemy.setSize(sf::Vector2f(30.f, 30.f));
+		break;
+	case 2:
+		this->enemy.setFillColor(sf::Color::Yellow);
+		this->enemy.setSize(sf::Vector2f(50.f, 50.f));
+		break;
+	case 3:
+		this->enemy.setFillColor(sf::Color::Cyan);
+		this->enemy.setSize(sf::Vector2f(70.f, 70.f));
+		break;
+	case 4:
+		this->enemy.setFillColor(sf::Color::Green);
+		this->enemy.setSize(sf::Vector2f(100.f, 100.f));
+		break;
+	default:
+		this->enemy.setFillColor(sf::Color::Blue);
+		this->enemy.setSize(sf::Vector2f(200.f, 200.f));
+		break;
+	}
+
+	std::cout << this->enemy.getPosition().x << "  " << enemy.getPosition().y << std::endl;
 
 	// Adds new enemy ('spawns' it in)
 	this->enemies.push_back(enemy);
@@ -178,10 +207,22 @@ void Game::updateEnemies()
 			{
 				if (this->enemies[i].getGlobalBounds().contains(this->mousePosView))
 				{
+					// Gain points
+					if (this->enemies[i].getFillColor() == sf::Color::Magenta)
+						this->points += 5;
+					else if (this->enemies[i].getFillColor() == sf::Color::Red)
+						this->points += 4;
+					else if (this->enemies[i].getFillColor() == sf::Color::Yellow)
+						this->points += 3;
+					else if (this->enemies[i].getFillColor() == sf::Color::Cyan)
+						this->points += 2;
+					else if (this->enemies[i].getFillColor() == sf::Color::Green)
+						this->points += 1;
+
 					// Delete the enemy
 					deleted = true;
 					this->enemies.erase(this->enemies.begin() + i);
-					this->points += 1.f;
+
 					std::cout << "Points: " << this->points << std::endl;
 				}
 			}
